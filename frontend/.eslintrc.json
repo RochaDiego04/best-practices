@@ -2,7 +2,8 @@
   "env": {
     "browser": true,
     "commonjs": true,
-    "es6": true
+    "es6": true,
+    "node": true
   },
   "extends": [
     "eslint:recommended",
@@ -11,17 +12,17 @@
     "plugin:react/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:jsx-a11y/recommended"
+    "plugin:jsx-a11y/recommended",
+    "airbnb-typescript", // Extend Airbnb TypeScript configuration
+    "plugin:@typescript-eslint/recommended"
   ],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "requireConfigFile": false,
-    "babelOptions": {
-      "presets": ["@babel/preset-react"]
-    },
+    "project": "./tsconfig.json",
     "ecmaFeatures": {
       "jsx": true
     },
@@ -33,19 +34,24 @@
       "version": "detect"
     }
   },
-  "plugins": ["react", "react-hooks"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint"],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [
       1,
       {
-        "extensions": [".js", ".jsx"]
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     ],
-    "react/display-name": 1,
+    "react/display-name": "warn",
 
     "quotes": ["error", "single"], // Enforces single quotes
     "react/function-component-definition": "off", // Disables the function component rule
-    "arrow-body-style": ["error", "as-needed"] // Allows arrow functions to omit braces when not necessary
+    "arrow-body-style": ["error", "as-needed"], // Allows arrow functions to omit braces when not necessary
+
+    // TypeScript-specific rules
+    "@typescript-eslint/explicit-module-boundary-types": "off", // Disable explicit types on module boundaries (optional)
+    "@typescript-eslint/no-unused-vars": "warn", // Warn about unused variables
+    "@typescript-eslint/no-explicit-any": "off" // Allow usage of 'any' type (optional)
   }
 }

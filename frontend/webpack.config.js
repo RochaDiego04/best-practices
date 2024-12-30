@@ -1,40 +1,50 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: './src/index.js', // Main entry point
+  entry: "./src/index.js", // Entry point
   output: {
-    path: path.resolve(__dirname, 'dist'), // Output directory
-    filename: 'bundle.js', // Output file name
-    clean: true, // Clean the dist folder before each build
+    path: path.resolve(__dirname, "dist"), // Output directory
+    filename: "bundle.js", // Output file
+    clean: true,
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/, // Transpile .js and .jsx files
-        exclude: /node_modules/,
+        test: /\.(js|jsx|ts|tsx)$/, // Match .js, .jsx, .ts, and .tsx files
+        exclude: /node_modules/, // Exclude node_modules
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
+          options: {
+            presets: [
+              "@babel/preset-env", // Transpile modern JavaScript
+              "@babel/preset-react", // Support React JSX
+              "@babel/preset-typescript", // Support TypeScript
+            ],
+          },
         },
       },
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        test: /\.css$/, // Match .css files
+        use: ["style-loader", "css-loader"],
       },
     ],
   },
+  resolve: {
+    extensions: [".js", ".jsx", ".ts", ".tsx"], // Resolve these extensions
+  },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html', // Use the HTML template
+      template: "./src/index.html", // HTML template
+      filename: "index.html",
     }),
   ],
   devServer: {
-    static: './dist',
+    static: {
+      directory: path.join(__dirname, "dist"), // Serve files from dist
+    },
     port: 3000,
-    hot: true,
+    open: true,
   },
-  resolve: {
-    extensions: ['.js', '.jsx'],
-  },
-  mode: 'development',
+  mode: "development", // Development mode
 };
